@@ -10,14 +10,20 @@ O plugin permite transformar arquivos Markdown em uma interface interativa de es
 
 * **Modos de Estudo:**
 * **Modo Livre:** Permite praticar questões com filtros personalizados (áreas, subáreas, tópicos e dificuldade).
+<img width="730" height="499" alt="image" src="https://github.com/user-attachments/assets/3b75082d-19f8-4c55-87b4-bca9b885816d" />
 
 
 * **Modo Prova:** Gera simulados cronometrados, permitindo a criação de arquivos de prova específicos.
 
+<img width="744" height="375" alt="image" src="https://github.com/user-attachments/assets/e77bb9aa-c2e2-4c6d-b83d-8b10a80963d4" />
 
+<img width="744" height="842" alt="image" src="https://github.com/user-attachments/assets/d5f1ce90-9e9d-4497-850d-8588c84c2299" />
 
 
 * **Priorização Inteligente:**
+
+<img width="729" height="562" alt="image" src="https://github.com/user-attachments/assets/be39a24a-ee02-4fca-948c-5b5ccf9f1992" />
+
 * Calcula a **Utilidade Egoísta** (baseada no histórico pessoal de acertos/erros).
 
 
