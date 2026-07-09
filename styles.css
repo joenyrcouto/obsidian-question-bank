@@ -1,0 +1,350 @@
+.qb-main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+.qb-filter-details {
+    background: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    margin: 10px;
+    padding: 5px;
+}
+.qb-filter-details summary {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 6px 10px;
+    user-select: none;
+    font-size: 1em;
+    color: var(--text-accent);
+}
+.qb-filter-panel {
+    padding: 10px;
+    border-top: 1px solid var(--background-modifier-border);
+}
+.qb-filter-item {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.qb-filter-item label {
+    font-size: 0.85em;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+.qb-filter-item select {
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    color: var(--text-normal);
+    border-radius: 4px;
+    padding: 4px;
+}
+.qb-custom-multiselect .qb-search-input {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    color: var(--text-normal);
+}
+.qb-custom-multiselect .qb-options-list {
+    max-height: 130px;
+    overflow-y: auto;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+}
+.qb-custom-multiselect .qb-option {
+    padding: 6px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    user-select: none;
+    border-bottom: 1px solid var(--background-modifier-border-alt);
+}
+.qb-custom-multiselect .qb-option:hover {
+    background: var(--background-modifier-hover);
+}
+.qb-custom-multiselect .qb-option.is-selected {
+    background: var(--background-modifier-active-hover);
+    font-weight: bold;
+}
+.qb-custom-multiselect .qb-option input[type="checkbox"] {
+    margin: 0;
+}
+.qb-filter-item-row {
+    margin: 15px 0 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+.qb-filter-item-row input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+.qb-filter-item-row label {
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+}
+.qb-btn-generate {
+    width: 100%;
+    margin-top: 5px;
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
+    font-weight: bold;
+    padding: 6px !important;
+}
+.qb-card-container {
+    padding: 0 10px;
+}
+.qb-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 20px;       /* Aumentado o espaço acima */
+    margin-bottom: 5px;     /* Diminuído o espaço abaixo (antes era 15px) */
+    font-weight: bold;
+}
+.qb-gear-btn {
+    background: transparent !important; border: none !important; cursor: pointer; font-size: 1.2em;
+}
+.qb-card { 
+    border: 1px solid var(--background-modifier-border); padding: 18px; border-radius: 6px; margin-bottom: 15px; background: var(--background-primary-alt); 
+}
+.qb-hidden-section { 
+    border-top: 2px dashed var(--background-modifier-border); margin-top: 15px; padding-top: 15px; 
+}
+.qb-sub-block { margin-bottom: 15px; }
+.qb-action-btn { width: 100%; margin-bottom: 15px; padding: 8px !important; }
+.qb-feedback { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+.qb-feedback button { flex: 1; padding: 8px !important; font-size: 0.9em; white-space: nowrap; }
+.qb-btn-green { background-color: var(--text-success) !important; color: white !important; font-weight: bold;}
+.qb-btn-red { background-color: var(--text-error) !important; color: white !important; font-weight: bold;}
+.qb-btn-resolvido { background-color: var(--interactive-accent) !important; color: white !important; }
+.qb-btn-pendente { background-color: var(--background-modifier-border) !important; color: var(--text-muted) !important;}
+.qb-btn-undo { flex: 0.35 !important; font-weight: bold !important; background-color: var(--background-modifier-error) !important; color: white !important; }
+.qb-navigation { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+.qb-navigation button { width: 48%; }
+
+.qb-inline-meta-container {
+    margin-bottom: 15px;    /* Ajuste aqui se precisar diminuir mais o espaço entre a tag e o card */
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+.qb-inline-meta-select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dotted var(--text-muted);
+    color: var(--text-normal);
+    padding: 0;
+    font-size: 1em;
+    cursor: pointer;
+}
+.qb-inline-meta-select:focus {
+    box-shadow: none;
+    border-bottom: 1px solid var(--text-accent);
+}
+.qb-link-section {
+    margin: 15px 0;
+    padding: 10px;
+    background: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.qb-btn-edit-link {
+    font-size: 0.85em;
+    padding: 4px 8px !important;
+}
+
+/* Melhorias no Select de Dificuldade */
+.qb-select-wrapper {
+    position: relative;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+}
+.qb-select-wrapper select {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-normal);
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Refinamento do Painel de Filtros */
+.qb-filter-details {
+    background: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.qb-filter-panel {
+    padding: 15px;
+    border-top: 1px solid var(--background-modifier-border);
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =======================================
+   MELHORIAS: ABAS (Segmented Control)
+   ======================================= */
+.qb-tabs { 
+    display: flex; 
+    gap: 5px; 
+    margin-bottom: 0px; 
+    background: var(--background-secondary);
+    padding: 5px;
+    border-radius: 8px;
+}
+.qb-tab-btn { 
+    flex: 1;
+    background: transparent; 
+    border: none; 
+    padding: 10px 12px; 
+    cursor: pointer; 
+    color: var(--text-muted); 
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+.qb-tab-btn:hover {
+    color: var(--text-normal);
+    background: var(--background-primary-alt);
+}
+.qb-tab-btn.active { 
+    background: var(--background-primary); 
+    color: var(--text-accent); 
+    font-weight: bold; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.qb-tab-content { padding-top: 5px; padding-bottom: 20px; }
+
+/* =======================================
+   MELHORIAS: MODO PROVA (Pesquisa e Lista)
+   ======================================= */
+.qb-exam-search { 
+    margin-top: 20px;
+    margin-bottom: 20px; }
+.qb-exam-search input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-size: 1em;
+}
+.qb-exam-list { display: flex; flex-direction: column; gap: 15px; }
+.qb-exam-card { 
+    border: 1px solid var(--background-modifier-border); 
+    padding: 15px; 
+    border-radius: 8px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px;
+    background: var(--background-secondary-alt);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.qb-exam-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--background-modifier-border-alt);
+    padding-bottom: 10px;
+}
+.qb-exam-card-header strong { font-size: 1.1em; color: var(--text-normal); }
+.qb-exam-filter-details summary { color: var(--text-muted); font-size: 0.9em; cursor: pointer; }
+.qb-exam-filter-details pre { 
+    background: var(--background-primary); 
+    padding: 10px; 
+    border-radius: 4px; 
+    font-size: 0.85em; 
+    overflow-x: auto; 
+    border: 1px solid var(--background-modifier-border); 
+    margin-top: 8px; 
+}
+.qb-btn-start { 
+    background-color: var(--interactive-accent); 
+    color: var(--text-on-accent); 
+    padding: 6px 16px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    cursor: pointer;
+    border: none;
+}
+
+.qb-exam-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px dashed var(--background-modifier-border); }
+.qb-exam-timer { font-family: monospace; font-size: 1.5em; font-weight: bold; color: var(--text-error); }
+.qb-exam-scroll-area { max-height: 60vh; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; }
+.qb-exam-question { margin-bottom: 30px; border-bottom: 1px solid var(--background-modifier-border); padding-bottom: 20px; }
+.qb-gabarito-item { border: 1px solid var(--background-modifier-border); margin-bottom: 10px; padding: 10px; border-radius: 5px; }
+.qb-gabarito-actions { display: flex; gap: 10px; margin-top: 10px; }
+
+/* =======================================
+   MELHORIAS: ESTATÍSTICAS
+   ======================================= */
+.qb-stat-block { 
+    margin-bottom: 30px; 
+    background: var(--background-secondary); 
+    padding: 15px; 
+    border-radius: 8px; 
+    border: 1px solid var(--background-modifier-border); 
+}
+.qb-stat-block h3 { 
+    margin-top: 0; 
+    margin-bottom: 15px; 
+    border-bottom: 1px solid var(--background-modifier-border); 
+    padding-bottom: 8px; 
+    font-size: 1.1em; 
+}
+.qb-stat-row { display: flex; align-items: center; margin-bottom: 12px; gap: 12px; }
+.qb-stat-label { width: 80px; font-weight: 600; font-size: 0.9em; color: var(--text-muted); }
+
+.qb-bar-wrapper { 
+    flex-grow: 1; 
+    background: var(--background-primary-alt); 
+    border-radius: 6px; 
+    overflow: hidden; 
+    height: 26px; 
+    position: relative; 
+    border: 1px solid var(--background-modifier-border-alt);
+}
+.qb-bar-fill { 
+    height: 100%; 
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out; 
+}
+.qb-bar-fill.rel { background: var(--interactive-accent); opacity: 0.8; }
+.qb-bar-fill.ego { background: var(--text-success); opacity: 0.8; }
+
+.qb-bar-text { 
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: var(--text-normal); 
+    font-size: 0.85em; 
+    font-weight: bold; 
+    z-index: 2; 
+    white-space: nowrap; 
+    text-shadow: 0px 1px 2px var(--background-primary);
+}

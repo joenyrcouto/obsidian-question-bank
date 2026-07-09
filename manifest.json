@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-question-bank",
+  "name": "Banco de Questões",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Gera flashcards dinâmicos baseados em metadados e arquivos Markdown.",
+  "author": "Assistente",
+  "isDesktopOnly": false
+}
