@@ -154,7 +154,7 @@ class QuestionBankView extends obsidian.ItemView {
         super(leaf);
         this.plugin = plugin;
         this.resetState();
-        this.filters = { diff: 'any', areas: [], subareas: [], topicos: [], useUtility: false, useRelUtility: false, maxQuestions: 0 };
+        this.filters = { diff: 'any', fontes: [], areas: [], subareas: [], topicos: [], useUtility: false, useRelUtility: false, maxQuestions: 0 };
         this.currentTab = "livre";
         this.activeExam = null;
         this.examSearchQuery = "";
@@ -212,18 +212,31 @@ class QuestionBankView extends obsidian.ItemView {
         return { area: parts[0] || "", subarea: parts[1] || "", topico: parts[2] || "", fullTag: tags[0] || "" };
     }
 
+    // Extrai a fonte (primeira subpasta após o basePath)
+    extractSource(filePath, basePath) {
+        if (!basePath) return "Raiz";
+        const normalizedBase = basePath.endsWith('/') ? basePath : basePath + '/';
+        if (!filePath.startsWith(normalizedBase)) return "Raiz";
+        const rel = filePath.substring(normalizedBase.length);
+        const firstSlash = rel.indexOf('/');
+        return firstSlash === -1 ? "Raiz" : rel.substring(0, firstSlash);
+    }
+
     async extractMetadataTree() {
         const allFiles = this.app.vault.getMarkdownFiles();
         this.allQuestionsMetadata = [];
+        const basePath = this.plugin.settings.basePath || "";
         allFiles.forEach(file => {
-            if (this.plugin.settings.basePath && !file.path.startsWith(this.plugin.settings.basePath)) return;
+            if (basePath && !file.path.startsWith(basePath)) return;
             const cache = this.app.metadataCache.getFileCache(file);
             if (cache?.frontmatter && cache.frontmatter.tipo === 'exercícios') {
                 let tags = cache.frontmatter.tags || [];
                 if (typeof tags === 'string') tags = [tags];
                 const { area, subarea, topico, fullTag } = this.parseHierarchicalTag(tags);
+                const fonte = this.extractSource(file.path, basePath);
                 this.allQuestionsMetadata.push({
                     file: file,
+                    fonte: fonte,
                     area: area,
                     subarea: subarea,
                     topico: topico,
@@ -320,6 +333,9 @@ class QuestionBankView extends obsidian.ItemView {
         ["0", "1", "2", "3", "4", "5"].forEach(d => this.uiDiff.createEl("option", { text: d, value: d }));
         this.uiDiff.value = this.filters.diff;
 
+        // Filtro de fontes (pastas)
+        this.fonteSelect = new MultiSelectSearch(filterPanel, "Fontes", null);
+        
         this.areaSelect = new MultiSelectSearch(filterPanel, "Áreas", () => this.updateSubareasUI());
         this.subareaSelect = new MultiSelectSearch(filterPanel, "Subáreas", () => this.updateTopicosUI());
         this.topicoSelect = new MultiSelectSearch(filterPanel, "Tópicos", null);
@@ -334,6 +350,8 @@ class QuestionBankView extends obsidian.ItemView {
         this.uiUtilRel.checked = this.filters.useRelUtility;
         utilWrapper2.createEl("label", { text: "Priorizar: Utilidade Relativa" }).setAttribute("for", "qb-field-util-rel");
 
+        // Atualizar opções de fontes e áreas
+        this.updateFontesUI();
         this.updateAreasUI();
 
         if (mode === "livre") {
@@ -371,9 +389,15 @@ class QuestionBankView extends obsidian.ItemView {
         }
     }
 
+    updateFontesUI() {
+        const fontes = Array.from(new Set(this.allQuestionsMetadata.map(q => q.fonte).filter(Boolean))).sort();
+        this.fonteSelect.updateOptions(fontes);
+    }
+
     updateAreasUI() {
         const areas = Array.from(new Set(this.allQuestionsMetadata.map(q => q.area).filter(Boolean))).sort();
-        this.areaSelect.updateOptions(areas); this.updateSubareasUI();
+        this.areaSelect.updateOptions(areas);
+        this.updateSubareasUI();
     }
     updateSubareasUI() {
         const selAreas = this.areaSelect.getValues();
@@ -382,7 +406,8 @@ class QuestionBankView extends obsidian.ItemView {
         this.updateTopicosUI();
     }
     updateTopicosUI() {
-        const selAreas = this.areaSelect.getValues(); const selSubareas = this.subareaSelect.getValues();
+        const selAreas = this.areaSelect.getValues();
+        const selSubareas = this.subareaSelect.getValues();
         let f = this.allQuestionsMetadata;
         if (selAreas.length > 0) f = f.filter(q => selAreas.includes(q.area));
         if (selSubareas.length > 0) f = f.filter(q => selSubareas.includes(q.subarea));
@@ -390,8 +415,13 @@ class QuestionBankView extends obsidian.ItemView {
     }
     updateFiltersFromUI() {
         this.filters = {
-            diff: this.uiDiff.value, areas: this.areaSelect.getValues(), subareas: this.subareaSelect.getValues(),
-            topicos: this.topicoSelect.getValues(), useUtility: this.uiUtilEgo.checked, useRelUtility: this.uiUtilRel.checked,
+            diff: this.uiDiff.value,
+            fontes: this.fonteSelect.getValues(),
+            areas: this.areaSelect.getValues(),
+            subareas: this.subareaSelect.getValues(),
+            topicos: this.topicoSelect.getValues(),
+            useUtility: this.uiUtilEgo.checked,
+            useRelUtility: this.uiUtilRel.checked,
             maxQuestions: parseInt(this.uiMax.value) || 0
         };
     }
@@ -402,6 +432,7 @@ class QuestionBankView extends obsidian.ItemView {
 
         let filtered = this.allQuestionsMetadata.filter(q => {
             if (this.filters.diff !== 'any' && q.dificuldade !== parseInt(this.filters.diff)) return false;
+            if (this.filters.fontes.length > 0 && !this.filters.fontes.includes(q.fonte)) return false;
             if (this.filters.areas.length > 0 && !this.filters.areas.includes(q.area)) return false;
             if (this.filters.subareas.length > 0 && !this.filters.subareas.includes(q.subarea)) return false;
             if (this.filters.topicos.length > 0 && !this.filters.topicos.includes(q.topico)) return false;
@@ -430,21 +461,6 @@ class QuestionBankView extends obsidian.ItemView {
         if (this.filters.maxQuestions > 0) filtered = filtered.slice(0, this.filters.maxQuestions);
         this.currentQuestions = filtered.map(q => q.file); 
         this.currentIndex = 0;
-    }
-
-    buildInlineSelect(parent, optionsList, currentValue, file, field) {
-        const sel = parent.createEl("select", { cls: "qb-inline-meta-select" });
-        sel.createEl("option", { text: "--", value: "" });
-        optionsList.forEach(opt => {
-            const o = sel.createEl("option", { text: opt, value: opt });
-            if (opt === currentValue) o.selected = true;
-        });
-        sel.onchange = async () => {
-            await this.app.fileManager.processFrontMatter(file, (fm) => {
-                fm[field] = sel.value;
-            });
-        };
-        return sel;
     }
 
     // ============================================================
@@ -485,11 +501,10 @@ class QuestionBankView extends obsidian.ItemView {
             openFileBtn.onclick = () => this.app.workspace.getLeaf(false).openFile(file);
 
             const metaDiv = this.cardContainer.createDiv({ cls: "qb-inline-meta-container" });
-const qMeta = this.allQuestionsMetadata.find(m => m.file.path === file.path);
-const tagText = qMeta && qMeta.fullTag ? `#${qMeta.fullTag}` : "Sem tag";
-const diffText = fm.dificuldade !== undefined ? fm.dificuldade : "0";
-
-metaDiv.createEl("span", { text: `${tagText} (Nív. ${diffText})` });
+            const qMeta = this.allQuestionsMetadata.find(m => m.file.path === file.path);
+            const tagText = qMeta && qMeta.fullTag ? `#${qMeta.fullTag}` : "Sem tag";
+            const diffText = fm.dificuldade !== undefined ? fm.dificuldade : "0";
+            metaDiv.createEl("span", { text: `${tagText} (Nív. ${diffText})` });
 
             const cardBody = this.cardContainer.createDiv({ cls: "qb-card" });
             if (perguntaMatch) {
@@ -856,6 +871,7 @@ metaDiv.createEl("span", { text: `${tagText} (Nív. ${diffText})` });
         const examPerfMap = await this.getExamPerformanceMap();
 
         let filtered = this.allQuestionsMetadata.filter(q => {
+            if (this.filters.fontes.length > 0 && !this.filters.fontes.includes(q.fonte)) return false;
             if (this.filters.areas.length > 0 && !this.filters.areas.includes(q.area)) return false;
             if (this.filters.subareas.length > 0 && !this.filters.subareas.includes(q.subarea)) return false;
             if (this.filters.topicos.length > 0 && !this.filters.topicos.includes(q.topico)) return false;
@@ -897,7 +913,7 @@ metaDiv.createEl("span", { text: `${tagText} (Nív. ${diffText})` });
         for (let d = 0; d <= 5; d++) {
             const qs = filtered.filter(q => q.dificuldade === d);
             const count = qs.length;
-            if (count === 0) continue; // Pula a renderização de níveis sem questões
+            if (count === 0) continue;
 
             const avgUrel = qs.reduce((acc, q) => acc + (q.u_rel || 0), 0) / count;
             const errPrc = (examRates[d] * 100).toFixed(1);
